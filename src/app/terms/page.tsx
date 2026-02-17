@@ -5,9 +5,9 @@ import styles from '@/components/layout/Legal.module.css';
 import { getLegalPages } from '@/lib/db';
 import MarkdownView from '@/components/common/MarkdownView';
 
-export default function TermsOfService() {
-  const pages = getLegalPages();
-  const page = pages.find((p: any) => p.slug === 'terms-of-service') || { title: 'Terms of Service', content: 'Content not found.' };
+export default async function TermsOfService() {
+  const pages = await getLegalPages();
+  const page = pages.find((p: any) => p.slug === 'terms-of-service') || { title: 'Terms of Service', content: 'Content not found.', last_updated: new Date().toISOString() };
 
   return (
     <main>
