@@ -64,6 +64,17 @@ A modern, high-performance website for an IT support company in Ireland, built w
 
 6.  Open [http://localhost:3000](http://localhost:3000) with your browser.
 
+## 🚀 Deployment on Vercel
+
+1.  Connect your GitHub repository to Vercel.
+2.  **IMMEDIATELY** Go to **Settings > Environment Variables**.
+3.  Add the same variables from your `.env.local` file:
+    *   `NEXT_PUBLIC_SUPABASE_URL`
+    *   `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+    *   `NEXTAUTH_SECRET`
+    *   `NEXTAUTH_URL`: Set to your Vercel domain (e.g., `https://wefix-it.vercel.app`)
+4.  Redeploy if necessary.
+
 ## 🔐 Admin Access
 
 Access the admin panel at `/admin`.
