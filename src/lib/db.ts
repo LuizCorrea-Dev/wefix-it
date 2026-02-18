@@ -20,6 +20,9 @@ export interface Service {
     isExclusive: boolean;
     is_exclusive?: boolean; // Supabase column
     features: string[]; // JSONB
+    imageUrl?: string;
+    image_url?: string; // Supabase column
+    display_order?: number;
 }
 
 export interface PricingPlan {
@@ -61,6 +64,7 @@ function normalizeService(s: any): Service {
         shortDescription: s.short_description || s.shortDescription,
         fullDescription: s.full_description || s.fullDescription,
         isExclusive: s.is_exclusive ?? s.isExclusive,
+        imageUrl: s.image_url || s.imageUrl,
     };
 }
 
@@ -72,7 +76,7 @@ function normalizePricing(p: any): PricingPlan {
 }
 
 export async function getServices(): Promise<Service[]> {
-    const { data, error } = await supabase.from('services').select('*').order('created_at', { ascending: true });
+    const { data, error } = await supabase.from('services').select('*').order('display_order', { ascending: true });
     if (error) {
         console.error('Error fetching services:', error);
         return [];

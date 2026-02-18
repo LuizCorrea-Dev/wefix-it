@@ -39,16 +39,12 @@ export default async function ServicePage({ params }: ServicePageProps) {
         <div className={styles.layout}>
           {/* Main Content */}
           <div className={styles.content}>
-            <div className={styles.imagePlaceholder}>
-               {/* Placeholder for service image */}
+            <div className={styles.imagePlaceholder} style={service.imageUrl ? { backgroundImage: `url(${service.imageUrl})`, backgroundSize: 'cover', backgroundPosition: 'center' } : {}}>
+               {!service.imageUrl && <span style={{ opacity: 0.5 }}>Service Image</span>}
             </div>
             
             <h2 className={styles.sectionTitle}>Overview</h2>
-            <p className={styles.text}>{service.fullDescription}</p>
-            <p className={styles.text}>
-              Tristique senectus et netus et malesuada fames ac turpis egestas.
-              Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-            </p>
+            <p className={styles.text} style={{ whiteSpace: 'pre-wrap' }}>{service.fullDescription}</p>
 
             <h3 className={styles.sectionTitle}>Key Features</h3>
             <div className={styles.featuresGrid}>

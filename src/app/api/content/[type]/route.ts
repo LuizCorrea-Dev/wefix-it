@@ -59,7 +59,7 @@ export async function POST(
       if (type === 'services') {
           // Body is Service[]
           // Map to DB columns
-          const rows = body.map((s: any) => ({
+          const rows = body.map((s: any, index: number) => ({
               id: s.id,
               slug: s.slug,
               title: s.title,
@@ -67,7 +67,9 @@ export async function POST(
               full_description: s.fullDescription,
               icon: s.icon,
               is_exclusive: s.isExclusive,
-              features: s.features // JSONB
+              features: s.features, // JSONB
+              display_order: index, // Save order based on array position
+              image_url: s.imageUrl // Save image URL
           }));
           
           const { error } = await supabase.from('services').upsert(rows);
@@ -103,6 +105,11 @@ export async function POST(
           }));
           const { error } = await supabase.from('pricing_plans').upsert(rows);
           if (error) throw error;
+          
+          const ids = rows.map((r: any) => r.id);
+          if(ids.length > 0) {
+              await supabase.from('pricing_plans').delete().not('id', 'in', `(${ids.join(',')})`);
+          }
           return NextResponse.json({ success: true });
       }
 
@@ -110,6 +117,11 @@ export async function POST(
           // Direct map if keys match (they do mostly)
           const { error } = await supabase.from('testimonials').upsert(body);
            if (error) throw error;
+
+           const ids = body.map((r: any) => r.id);
+           if(ids.length > 0) {
+              await supabase.from('testimonials').delete().not('id', 'in', `(${ids.join(',')})`);
+           }
            return NextResponse.json({ success: true });
       }
       

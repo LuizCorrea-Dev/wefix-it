@@ -10,8 +10,8 @@ export default async function ServicesPage() {
     <main>
       <Header />
       <PageHeader 
-        title="Our Services" 
-        subtitle="Exclusive technology solutions tailored for your business needs."
+        title="Managed IT Services for High-End Enterprises" 
+        subtitle="From remote support to advanced cybersecurity, we deliver the technological foundation your company needs to grow without interruption."
       />
       
       {/* Reusing Home Services component but adding top padding to separate from header */}

@@ -64,7 +64,13 @@ A modern, high-performance website for an IT support company in Ireland, built w
 
 6.  Open [http://localhost:3000](http://localhost:3000) with your browser.
 
-## 🚀 Deployment on Vercel
+## 🚀 Deployment
+
+**CRITICAL**: Correct environment variable configuration is essential for authentication to work (especially `NEXTAUTH_URL`).
+
+👉 **Please read [DEPLOYMENT.md](DEPLOYMENT.md) for a detailed guide on deploying to Hostinger, VPS, or Vercel.**
+
+### Vercel Deployment
 
 1.  Connect your GitHub repository to Vercel.
 2.  **IMMEDIATELY** Go to **Settings > Environment Variables**.

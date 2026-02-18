@@ -38,16 +38,10 @@ interface HeroProps {
 
 export default function Hero({ content }: HeroProps) {
   // Default values strictly if content is missing, though db.json should have it.
-  const title = content?.title || "A source of innovation and excellence";
-  const subtitle = content?.subtitle || "Pede mus ac auctor facilisis sem aliquam. Sem auctor fames enim scelerisque himenaeos in velit.";
+  const title = content?.title || "IT solutions that drive innovation and excellence in Ireland.";
+  const subtitle = content?.subtitle || "Specialized technical support and managed IT services designed to scale your business. Security, performance, and continuity where you need it most.";
   const lottieUrl = content?.image_url || "https://lottie.host/2a4c45a7-ff86-4738-b4d1-39f7c1eaa3c3/BvXVSWNDLL.json";
-  // Splitting title for highlighting logic if needed, or just rendering plain. 
-  // The design had "innovation" highlighted. 
-  // For CMS simplicity, we might lose the span styling or implement a simple markdown parser or "highlight word" field.
-  // For now, render full title.
-  
   const backgroundImage = content?.background_image;
-  // Default show_lottie to true if undefined, false only if explicitly false
   const showLottie = content?.show_lottie !== false;
 
   return (

@@ -28,7 +28,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       <aside style={{ width: '250px', backgroundColor: '#1a1a2e', color: 'white', padding: '2rem', display: 'flex', flexDirection: 'column' }}>
         <div style={{ marginBottom: '3rem' }}>
           <h2 style={{ fontSize: '1.5rem', fontWeight: '800', color: 'white', display: 'flex', alignItems: 'center', gap: '4px' }}>
-            <span>WeFix</span><span style={{ color: 'var(--color-accent)' }}>It</span> 
+            <span>WeFix-</span><span style={{ color: 'var(--color-accent)' }}>It</span> 
             <span style={{ fontSize: '0.875rem', fontWeight: 'normal', opacity: 0.7, marginLeft: '0.5rem', alignSelf: 'flex-end', paddingBottom: '4px' }}>Admin</span>
           </h2>
           <p style={{ fontSize: '0.875rem', color: '#888' }}>Welcome, {session?.user?.name || 'Admin'}</p>

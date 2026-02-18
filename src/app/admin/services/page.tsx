@@ -16,22 +16,24 @@ type ServiceForm = {
         icon: string;
         isExclusive: boolean;
         features: string[];
+        imageUrl?: string;
     }[]
 };
 
 export default function ServicesEditor() {
     // We fetch the entire list and edit it. In a real app we might edit one by one.
     // For this simple JSON DB, we'll load the whole array, and save the whole array.
-    const { register, control, handleSubmit, reset } = useForm<ServiceForm>({
+    const { register, control, handleSubmit, reset, setValue, watch } = useForm<ServiceForm>({
         defaultValues: { services: [] }
     });
-    const { fields, append, remove } = useFieldArray({
+    const { fields, append, remove, swap } = useFieldArray({
         control,
         name: "services"
     });
     
     const [loading, setLoading] = useState(true);
     const [saving, setSaving] = useState(false);
+    const [uploading, setUploading] = useState<string | null>(null); // ID of service being uploaded to
     const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
 
     useEffect(() => {
@@ -43,11 +45,40 @@ export default function ServicesEditor() {
             });
     }, [reset]);
 
+    const handleImageUpload = async (e: React.ChangeEvent<HTMLInputElement>, index: number) => {
+        if (!e.target.files || e.target.files.length === 0) return;
+        
+        const file = e.target.files[0];
+        const formData = new FormData();
+        formData.append('file', file);
+
+        setUploading(fields[index].id);
+        
+        try {
+            const res = await fetch('/api/upload', {
+                method: 'POST',
+                body: formData,
+            });
+            
+            if (!res.ok) throw new Error('Upload failed');
+            
+            const data = await res.json();
+            setValue(`services.${index}.imageUrl`, data.url);
+            
+            // Hack to force re-render/update of field array if needed, but setValue should work?
+            // React Hook Form field array can be tricky with nested updates. 
+            // We might need to update the specific field object if using 'fields' for rendering.
+            // But watch() or getValues() would show it.
+        } catch (error) {
+            console.error('Upload error:', error);
+            alert('Failed to upload image');
+        } finally {
+            setUploading(null);
+        }
+    };
+
     const onSubmit = async (data: ServiceForm) => {
         setSaving(true);
-        // Ensure features is an array of strings... handled by inputs?
-        // simple text input for features csv? or separate array?
-        // Let's keep it simple: comma separated for features in this quick editor
         
         await fetch('/api/content/services', {
             method: 'POST',
@@ -78,6 +109,8 @@ export default function ServicesEditor() {
                             <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', cursor: 'pointer' }} onClick={() => setExpandedIndex(expandedIndex === index ? null : index)}>
                                 <h3 style={{ fontWeight: 'bold' }}>{index + 1}. {field.title || 'Untitled Service'}</h3>
                                 <div style={{ display: 'flex', gap: '0.5rem' }}>
+                                    <Button type="button" variant="ghost" size="sm" onClick={(e) => { e.stopPropagation(); index > 0 && swap(index, index - 1); }} disabled={index === 0}>↑</Button>
+                                    <Button type="button" variant="ghost" size="sm" onClick={(e) => { e.stopPropagation(); index < fields.length - 1 && swap(index, index + 1); }} disabled={index === fields.length - 1}>↓</Button>
                                     <Button type="button" variant="ghost" size="sm"><Edit size={16} /></Button>
                                     <Button type="button" variant="destructive" size="sm" onClick={(e) => { e.stopPropagation(); remove(index); }}><Trash2 size={16} /></Button>
                                 </div>
@@ -105,6 +138,22 @@ export default function ServicesEditor() {
                                     <div>
                                         <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem' }}>Full Description</label>
                                         <textarea {...register(`services.${index}.fullDescription` as const)} rows={4} style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', border: '1px solid #ddd' }} />
+                                    </div>
+
+                                    <div>
+                                        <label style={{ display: 'block', marginBottom: '0.5rem', fontSize: '0.875rem' }}>Cover Image</label>
+                                        <div style={{ display: 'flex', alignItems: 'center', gap: '1rem' }}>
+                                             <input 
+                                                type="file" 
+                                                accept="image/*"
+                                                onChange={(e) => handleImageUpload(e, index)}
+                                                disabled={uploading === field.id}
+                                                style={{ fontSize: '0.875rem' }}
+                                             />
+                                             {uploading === field.id && <span style={{ fontSize: '0.875rem', color: '#666' }}>Uploading...</span>}
+                                        </div>
+                                        {/* Preview - relying on watch() to get live value */}
+                                        <ServiceImagePreview control={control} index={index} />
                                     </div>
 
                                     <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem' }}>
@@ -180,4 +229,20 @@ function FeatureListEditor({ control, index }: { control: any, index: number }) 
             style={{ width: '100%', padding: '0.5rem', borderRadius: '6px', border: '1px solid #ddd' }}
         />
     )
+}
+
+function ServiceImagePreview({ control, index }: { control: any, index: number }) {
+    const imgUrl = useController({
+        control,
+        name: `services.${index}.imageUrl`,
+    }).field.value;
+
+    if (!imgUrl) return null;
+
+    return (
+        <div style={{ marginTop: '0.5rem', maxWidth: '200px', borderRadius: '6px', overflow: 'hidden', border: '1px solid #eee' }}>
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={imgUrl} alt="Service Preview" style={{ width: '100%', height: 'auto', display: 'block' }} />
+        </div>
+    );
 }

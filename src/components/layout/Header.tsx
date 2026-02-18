@@ -24,7 +24,7 @@ export default function Header() {
       <div className={cn("container", styles.container)}>
         <Link href="/" className={styles.logo}>
             {/* Placeholder for Logo - replacing Image with text for now as per instructions to use minimal placeholder if asset missing */}
-            <span className={styles.logoText}>WeFix<span className={styles.logoAccent}>It</span></span>
+            <span className={styles.logoText}>WeFix-<span className={styles.logoAccent}>It</span></span>
         </Link>
 
         {/* Desktop Nav */}

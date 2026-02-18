@@ -37,12 +37,12 @@ export default async function AboutPage() {
           
           <div className={styles.content}>
             <span className={styles.overline}>{data.section_label || "Who We Are"}</span>
-            <h2 className={styles.heading}>{data.heading || "Delivering IT solutions that enable you to work smarter"}</h2>
+            <h2 className={styles.heading}>{data.heading || "Leading the Future of Technology with Strategic Support"}</h2>
             <p className={styles.text}>
-              {data.paragraph1 || "Velit ante praesent blandit imperdiet massa scelerisque volutpat. Cubilia elit turpis habitasse hac molestie. Quisque dui himenaeos ut interdum hac viverra."}
+              {data.paragraph1 || "With over 8 years of experience in the Irish market, WeFix It combines in-depth technical knowledge with personalized service. We're not just support; we're your infrastructure partner."}
             </p>
             <p className={styles.text}>
-              {data.paragraph2 || "Tortor ante hac nam curae finibus sed. Dignissim eget scelerisque primis vulputate maecenas."}
+              {data.paragraph2 || "We've reduced downtime by up to 40% for our clients through proactive monitoring and state-of-the-art cloud solutions."}
             </p>
             <Link href={data.cta_link || "/contact"}>
                 <Button size="lg">{data.cta_text || "More About Us"}</Button>

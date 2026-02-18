@@ -13,7 +13,7 @@ export default async function Footer() {
         <div className={styles.grid}>
           {/* Column 1: Brand */}
           <div className={styles.brandCol}>
-             <span className={styles.logoText}>WeFix<span className={styles.logoAccent}>It</span></span>
+             <span className={styles.logoText}>WeFix-<span className={styles.logoAccent}>It</span></span>
             <p className={styles.description}>
               {content.company_description || "Innovative technology solutions for modern businesses."}
             </p>

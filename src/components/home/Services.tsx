@@ -16,10 +16,14 @@ export default async function Services() {
             
             return (
             <Link key={service.id || index} href={`/services/${service.slug}`} className={styles.cardLink}>
-              <div className={styles.card}>
-                <div className={styles.iconWrapper}>
-                  <IconComponent size={32} className={styles.icon} />
-                </div>
+                <div className={styles.card}>
+                  {service.imageUrl ? (
+                    <div className={styles.cardImage} style={{ backgroundImage: `url(${service.imageUrl})` }} />
+                  ) : (
+                    <div className={styles.iconWrapper}>
+                      <IconComponent size={32} className={styles.icon} />
+                    </div>
+                  )}
                 {service.isExclusive && <span className={styles.badge}>EXCLUSIVE</span>}
                 <h3 className={styles.title}>{service.title}</h3>
                 <p className={styles.description}>{service.shortDescription}</p>
